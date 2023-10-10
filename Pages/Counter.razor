@@ -1,0 +1,37 @@
+﻿@page "/counter"
+@using LamaranKerjaOnline.Service;
+@using Mapster;
+@using bwaCrixalis.Shared._1._Master;
+@inject BarangService _barangService
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Nama Barang</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in _daftarBarang)
+        {
+            <tr>
+                <td>@item.IdBarang</td>
+                <td>@item.Barang</td>
+            </tr>
+        }
+    </tbody>
+</table>
+@code {
+    private List<T2Barang> _daftarBarang = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var dataBarang = _barangService.GetDataBarang();
+        await foreach (var item in dataBarang)
+        {
+            _daftarBarang.Add(new T2Barang{ Barang = item.Barang, IdBarang = Guid.Parse(item.IdBarang)});
+            this.StateHasChanged();
+        }
+
+    }
+}

@@ -1,0 +1,48 @@
+﻿@inherits LayoutComponentBase
+@inject   NavigationManager _nm
+
+
+<RadzenLayout>
+    <RadzenHeader>
+        <RadzenStack Orientation="Radzen.Orientation.Horizontal" AlignItems="AlignItems.Center">
+            <RadzenSidebarToggle Click="@(() => sidebar1Expanded = !sidebar1Expanded)" />
+            <RadzenLabel Text="Header" />
+        </RadzenStack>
+    </RadzenHeader>
+    <RadzenSidebar @bind-Expanded="@sidebar1Expanded">
+        <RadzenPanelMenu Click="@PilihMenu">
+            <RadzenPanelMenuItem Text="Home" Icon="home" />
+            <RadzenPanelMenuItem Text="Counter" Icon="account_box" />
+            <RadzenPanelMenuItem Text="Fetchdata" Icon="dns" />
+            <RadzenPanelMenuItem Text="Icons" Icon="android" />
+        </RadzenPanelMenu>
+    </RadzenSidebar>
+    <RadzenBody>
+        <div class="page">
+            <main>
+                <article>
+                    @Body
+                </article>
+            </main>
+        </div>
+    </RadzenBody>
+    <RadzenFooter>
+        Footer
+    </RadzenFooter>
+</RadzenLayout>
+
+@code{
+    public bool sidebar1Expanded = true;
+
+    void PilihMenu(Radzen.MenuItemEventArgs e)
+    {
+        if (e.Text == "Home")
+        {
+            _nm.NavigateTo("/");
+        }
+        else
+        {
+            _nm.NavigateTo($"/{e.Text.ToLower()}");
+        }
+    }
+}

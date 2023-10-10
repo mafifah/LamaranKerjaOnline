@@ -1,0 +1,26 @@
+﻿@page "/fetchdata"
+@using LamaranKerjaOnline.Service;
+@using Mapster;
+@using bwaCrixalis.Shared._1._Master;
+@inject BarangService _barangService
+
+<DxGrid Data="@_daftarBarang">
+    <Columns>
+        <DxGridDataColumn FieldName="IdBarang" />
+        <DxGridDataColumn FieldName="Barang" />
+    </Columns>
+</DxGrid>
+@code {
+    private List<T2Barang> _daftarBarang = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var dataBarang = _barangService.GetDataBarang();
+        await foreach (var item in dataBarang)
+        {
+            _daftarBarang.Add(new T2Barang { Barang = item.Barang, IdBarang = Guid.Parse(item.IdBarang) });
+            this.StateHasChanged();
+        }
+
+    }
+}
